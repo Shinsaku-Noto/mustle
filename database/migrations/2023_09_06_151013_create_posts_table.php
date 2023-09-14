@@ -15,16 +15,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parts_id');
-            $table->foreignId('menus_id');
-            $table->foreignId('users_id');
-            $table->float('weight', 8,2);
-            $table->integer('reps');
-            $table->time('time', $precision = 0);
-            $table->float('distance', 8,2);
-            $table->string('memo', 50);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

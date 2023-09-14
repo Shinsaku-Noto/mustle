@@ -34,10 +34,6 @@ class PartSeeder extends Seeder
         DB::table('parts')->insert([
            'part_name' => '肩',
           ]);
-          
-         DB::table('parts')->insert([
-           'part_name' => 'その他',
-          ]);
         
     }
 }
