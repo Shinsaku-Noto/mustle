@@ -18,27 +18,26 @@ class PostSeeder extends Seeder
     public function run()
     {
         DB::table('posts')->insert([
-           'parts_id' => 1,
-           'menus_id' => 1,
-           'users_id' => '',
+           'part_id' => 1,
+           'menu_id' => 1,
+           'user_id' => 1,
            'weight' => 50,
            'reps' => 10,
-           'time' => '',
-           'distance' => '',
-           'memo' => '',
+           'time' => new Datetime(),
+           'distance' => 100,
+           'memo' => 'あいうえお',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
-           
         ]);
-        
-        DB::table('posts')->insert([
-           'parts_id' => 1,
-           'menus_id' => 1,
-           'users_id' => '',
+           
+           DB::table('posts')->insert([
+           'part_id' => 1,
+           'menu_id' => 1,
+           'user_id' => 1,
            'weight' => 50,
            'reps' => 8,
-           'time' => '',
-           'distance' => '',
+           'time' => new Datetime(),
+           'distance' => 50,
            'memo' => '',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
@@ -46,13 +45,13 @@ class PostSeeder extends Seeder
         ]);
         
         DB::table('posts')->insert([
-           'parts_id' => 1,
-           'menus_id' => 2,
-           'users_id' => '',
+           'part_id' => 1,
+           'menu_id' => 2,
+           'user_id' => 1,
            'weight' => 30,
            'reps' => 10,
-           'time' => '',
-           'distance' => '',
+           'time' => new Datetime(),
+           'distance' => 50,
            'memo' => '',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
@@ -60,13 +59,13 @@ class PostSeeder extends Seeder
         ]);
         
         DB::table('posts')->insert([
-           'parts_id' => 1,
-           'menus_id' => 2,
-           'users_id' => '',
+           'part_id' => 1,
+           'menu_id' => 2,
+           'user_id' => 1,
            'weight' => 30,
            'reps' => 10,
-           'time' => '',
-           'distance' => '',
+           'time' => new Datetime(),
+           'distance' => 50,
            'memo' => '',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
@@ -74,13 +73,13 @@ class PostSeeder extends Seeder
         ]);
         
         DB::table('posts')->insert([
-           'parts_id' => 2,
-           'menus_id' => 3,
-           'users_id' => '',
-           'weight' => '',
+           'part_id' => 2,
+           'menu_id' => 3,
+           'user_id' => 1,
+           'weight' => 50,
            'reps' => 10,
-           'time' => '',
-           'distance' => '',
+           'time' => new Datetime(),
+           'distance' => 50,
            'memo' => '',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
@@ -88,17 +87,16 @@ class PostSeeder extends Seeder
         ]);
         
         DB::table('posts')->insert([
-           'parts_id' => 2,
-           'menus_id' => 3,
-           'users_id' => '',
-           'weight' => '',
+           'part_id' => 2,
+           'menu_id' => 3,
+           'user_id' => 1,
+           'weight' => 50,
            'reps' => 9,
-           'time' => '',
-           'distance' => '',
+           'time' => new Datetime(),
+           'distance' => 50,
            'memo' => '',
            'created_at' => new Datetime(),
            'updated_at' => new DateTime(),
-           
         ]);
         
     }

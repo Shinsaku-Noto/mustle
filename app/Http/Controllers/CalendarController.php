@@ -1,15 +1,15 @@
-<?php
+// <?php
 
-namespace App\Http\Controllers;
+// namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Calendar\CalendarView;
+// use Illuminate\Http\Request;
+// use App\Calendar\CalendarView;
 
-class CalendarController extends Controller
-{
-    $calendar = new CalendarView(time());
+// class CalendarController extends Controller
+// {
+//     $calendar = new CalendarView(time());
     
-    return view('schedules.calendar',[
-        "calendar" => $calendar    
-    ]);
-}
+//     return view('schedules.calendar',[
+//         "calendar" => $calendar    
+//     ]);
+// }
