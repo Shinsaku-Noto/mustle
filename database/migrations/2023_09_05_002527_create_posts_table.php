@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parts_id');
-            $table->foreignId('menus_id');
-            $table->foreignId('users_id');
-            $table->float('weight', 8,2);
-            $table->integer('reps');
-            $table->time('time', $precision = 0);
-            $table->float('distance', 8,2);
-            $table->string('memo', 50);
+            $table->foreignId('part_id')->constrained();
+            $table->foreignId('menu_id')->constrained();
+            $table->foreignId('user_id')->constrained()->nullable();
+            $table->float('weight', 8,2)->nullable();
+            $table->integer('reps')->nullable();
+            $table->time('time', $precision = 0)->nullable();
+            $table->float('distance', 8,2)->nullable();
+            $table->string('memo', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
