@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('part_id')->constrained();
             $table->string('menu_name', 50);
         });
     }
