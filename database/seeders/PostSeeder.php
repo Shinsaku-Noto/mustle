@@ -19,7 +19,7 @@ class PostSeeder extends Seeder
     {
         DB::table('posts')->insert([
            'part_id' => 1,
-           'menu_id' => 1,
+          'menu_id' => 1,
            'user_id' => 1,
            'weight' => 50,
            'reps' => 10,
