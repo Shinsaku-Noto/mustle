@@ -58,24 +58,33 @@ class PostController extends Controller
             $post->user_id = Auth::id();
             $post->save();
         }
-      // $i = 0;
-      // foreach($request->num as $val){
-      //   if(isset($request['post'][$i])){
-      //     $post = new Post;
-      //     $input = $request['post'][$i];
-      //     $input['menu_id'] = Menu::where("menu_name", $request['post']['menu_name'][$i])->first()->id;
-      //     $input['part_id'] = Menu::where("menu_name", $request['post']['menu_name'][$i])->first()->part_id;
-      //     $input['user_id'] = Auth::id();
-      //     $post->fill($input)->save();
-      //     $i++;
-      //   }
-        
-      // }
-      
-      // $request->all()->save();
       
       return redirect('/posts/create');
     }
+    
+    public function store_menu(Request $request, Menu $menu)
+    {
+      $menuData = $request->input('menu');
+      $menu->part_id = $menuData['part_id'];
+      $menu->menu_name = $menuData['menu_name'];
+      $menu->save();
+      
+      return redirect('/posts/create');
+    }
+    
+    public function delete(Post $post)
+    {
+        $post->delete();
+        return redirect('/');
+    }
+    
+     public function menu_delete(Menu $menu)
+    {
+        $menu->delete();
+        return redirect('/posts/create');
+    }
+    
+    
     
     // public function parts(Post $post, Parts $part)
     // {

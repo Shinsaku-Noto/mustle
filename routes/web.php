@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -32,12 +33,12 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
     Route::get('/', 'index')->name('index');
-    Route::post('/posts/create', 'store')->name('store');
     Route::get('/posts/create', 'create')->name('create');
-    // Route::get('/posts/{post}', 'show')->name('show');
-    // Route::put('/posts/{post}', 'update')->name('update');
-    // Route::delete('/posts/{post}', 'delete')->name('delete');
-    // Route::get('/posts/{post}/edit', 'edit')->name('edit');
+    Route::post('/posts/create', 'store')->name('store');
+    Route::post('/posts/create/menu', 'store_menu')->name('store_menu');
+    Route::delete('/{post}', 'delete')->name('delete');
+    Route::delete('/posts/{menu}', 'menu_delete')->name('menu_delete');
 });
+
 
 require __DIR__.'/auth.php';

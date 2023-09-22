@@ -17,17 +17,19 @@
         筋トレ管理
       </x-slot>
       <body class="antialiased">
-        <div class="header">
+        <div class="header flex justify-center">
           <h1>筋トレ管理アプリ</h1>
         </div>
+        
+          
+          <a href="/">戻る</a>
+
+ <!--入力フォーム-->          
+          <div class="btn" id="addButton">追加</div>
         <form action="/posts/create" method="POST">
           @csrf
-          <a href="/">戻る</a>
-          
-          <div class="btn" id="addButton">追加</div>
-          
-          <div class="content">
-            <div>
+          <div class="content flex justify-center">
+            <div class="">
               <input type="text" name="post[menu_name][0]" class="menu_name block" id="menu_name"/>
               <input type="number" name="post[weight][0]"/>
               <input type="number" name="post[reps][0]"/>
@@ -36,47 +38,46 @@
               <input type="text" name="post[memo][0]"/>
             </div>
           </div>
-          
-          
-    <!--入力フォーム-->
-          {{--<!--@for ($i=0; $i<4; $i++)-->--}}
-          <!--<div class="input">-->
-          <!--  <input type="text" name="post[menu_name][]" class="menu_name"/>-->
-          <!--  <div>-->
-          <!--    <input type="number" name="post[weight][]"/>-->
-          <!--    <input type="number" name="post[reps][]"/>-->
-          <!--    <input type="time" name="post[time][]"/>-->
-          <!--    <input type="number" name="post[distance][]"/>-->
-          <!--    <input type="text" name="post[memo][]"/>-->
-          <!--  </div>-->
-          <!--  <input type="hidden" name="num[]">-->
-          <!--</div>-->
-         {{-- <!--@endfor-->--}}
-          <p id="count">1</p>
-          <button type="button" onclick="copy()">+</button>
           <input type="submit" value="保存"/>
+        </form>
     <!--メニュー一覧-->
-          <div>
+        <div class="w-3/5 flex justify-between ">
+          <div class="flex">
             <input type="button" value="胸" onclick="clickChest()">
               <div id="chest_menus">
               @foreach($chests as $chest)
                 <input type="button" value="{{ $chest->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $chest->id }}" id="form_{{ $chest->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $chest->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
-          </div>
+          </div>        
           <div>
             <input type="button" value="背中" onclick="clickBack()">
               <div id="back_menus">
               @foreach($backs as $back)
                 <input type="button" value="{{ $back->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $back->id }}" id="form_{{ $back->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $back->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
-          </div>  
+          </div>
           <div>
             <input type="button" value="足" onclick="clickLeg()">
               <div id="leg_menus">
               @foreach($legs as $leg)
                 <input type="button" value="{{ $leg->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $leg->id }}" id="form_{{ $leg->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $leg->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
           </div>
@@ -85,6 +86,11 @@
               <div id="arm_menus">
               @foreach($arms as $arm)
                 <input type="button" value="{{ $arm->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $arm->id }}" id="form_{{ $arm->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $arm->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
           </div>
@@ -93,6 +99,11 @@
               <div id="shoulder_menus">
               @foreach($shoulders as $shoulder)
                 <input type="button" value="{{ $shoulder->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $shoulder->id }}" id="form_{{ $shoulder->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $shoulder->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
           </div>
@@ -101,10 +112,34 @@
               <div id="other_menus">
               @foreach($others as $other)
                 <input type="button" value="{{ $other->menu_name }}" onclick="clickMenu(event)">
+                <form action="/posts/{{ $other->id }}" id="form_{{ $other->id }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" onclick="deleteMenu({{ $other->id }})">delete</button> 
+                </form>
               @endforeach
               </div>
           </div>
-        </form>
+        </div>
+          <div>
+            <input type="button" value="メニューを追加する" onclick="addMenu()">
+            <form action="/posts/create/menu" method="POST">
+              @csrf
+              <div id="add_menu">
+                <select name="menu[part_id]">
+                  <option value="1">胸</option>
+                  <option value="2">背中</option>
+                  <option value="3">足</option>
+                  <option value="4">腕</option>
+                  <option value="5">肩</option>
+                  <option value="6">その他</option>
+                </select>
+                <input type="text" name="menu[menu_name]"/> 
+                <input type="submit" value="メニュー追加">
+              </div>
+            </form>
+          </div>
+        
         
         
       <script>
@@ -162,28 +197,10 @@
           
           // content 要素に div 要素を追加
           document.querySelector('.content').appendChild(newDiv);
+        }else{
+          alert('メニューを選択してください');
         }
-        
-        
       });
-      //メニュー選択
-        
-        
-      //Form増やす
-        let thisCount = document.getElementById('count');
-        let Counter = 0;
-        
-        function copy(){
-          let input = document.getElementsByClassName('input')[Counter];
-          let clone_element = input.cloneNode(true);
-          console.log(clone_element);
-          input.after(clone_element);
-          
-          Counter = Counter + 1;
-          thisCount.innerHTML = Counter;
-          
-          
-        }
         
       //メニュー表示
         document.getElementById("chest_menus").style.display = "none";
@@ -192,6 +209,7 @@
         document.getElementById("arm_menus").style.display = "none";
         document.getElementById("shoulder_menus").style.display = "none";
         document.getElementById("other_menus").style.display = "none";
+        
         
         function clickChest(){
           const chest_menus = document.getElementById("chest_menus");
@@ -253,10 +271,27 @@
           }
         }
         
+      //メニュー追加
+      document.getElementById("add_menu").style.display = "none";
+      
+      function addMenu(){
+        const add_menu = document.getElementById("add_menu");
         
+        if(add_menu.style.display == "block"){
+          add_menu.style.display = "none";
+        }else{
+          add_menu.style.display = "block";
+        }
+      }
+      
+      //メニュー削除
+      function deleteMenu(id) {
+                'use strict'
         
-        
-        
+                if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                    document.getElementById(`form_${id}`).submit();
+                }
+            }
         
       </script>
       </body>
