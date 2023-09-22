@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('part_id')->constrained();
             $table->string('menu_name', 50);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
