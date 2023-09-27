@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-a{
-    @apply text-blue-600 underline;
+* {    
+  box-sizing: border-box;   
+  margin: 0;    
+  padding: 0;  
 }
+

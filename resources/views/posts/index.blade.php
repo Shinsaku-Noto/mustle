@@ -15,73 +15,77 @@
         
     </head>
     <x-app-layout>
-        <x-slot name="header">
-             （ヘッダー名）
-        </x-slot>
           <body class="antialiased">
             <h1 class="content-center text-lg">筋トレ管理アプリ</h1>
         
             <div id="app">
-              <div class="m-auto w-50 m-5 p-5">
+              <div class="m-auto w-3/5 m-5 p-5">
                 <div id="calendar"></div>
               </div>
             </div>
             
             
         <!--今日のメニュー-->
-            <div class="add_training m-auto">
+            <div class="flex justify-center my-5">
               <a  class="add" href="/posts/create">今日のメニュー</a>
             </div>
             
-            <div class="flex justify-center">
-            @php
-              $part_value = "part_name";
-              $menu_value = "menu_name";
-            @endphp
-            @foreach ($posts as $post)
-              <div class="flex">
-                <div class="">
-                  @if($post->part->part_name != $part_value)
-                    @php
-                      $part_value = $post->part->part_name;
-                    @endphp
-                    <h2 class="">{{ $post->part->part_name }}</h2>
-                  @endif
-                </div>
-                <div>
-                  <div>
+            <div class="flex flex-col block justify-center">
+              @php
+                $part_value = "part_name";
+                $menu_value = "menu_name";
+              @endphp
+              
+                @foreach ($posts as $post)
+                <div class="flex justify-center">
+                  <div class="bg-gray-200 flex justify-center border-4">
+                    @if($post->part->part_name != $part_value)
+                      @php
+                        $part_value = $post->part->part_name;
+                      @endphp
+                      <h2 class="text-xl w-24 items-center">{{ $post->part->part_name }}</h2>
+                    @else
+                      <h2 class="text-xl w-24 items-center  opacity-0">{{ $post->part->part_name }}</h2>
+                    @endif
+                  </div>
+                  
+                  <div class="bg-blue-200">
                     @if($post->menu->menu_name != $menu_value)
                       @php
                         $menu_value = $post->menu->menu_name;
                       @endphp
-                      <h3 class="menus">{{ $post->menu->menu_name }}</h3>
+                      <h3 class="text-lg w-48">{{ $post->menu->menu_name }}</h3>
+                    @else
+                      <h3 class="text-lg w-48  opacity-0">{{ $post->menu->menu_name }}</h3>
                     @endif
                   </div>
-                  <div class="">
-                    <div class="flex">
-                      <p class="weight">{{ $post->weight }}kg</p>
-                      <p class="reps">{{ $post->reps }}回</p>
-                    </div>
-                    <div class="flex">
-                      <p class="time">{{ $post->time }}</p>
-                      <p class="distance">{{ $post->distance }}</p>
-                    </div>
-                    <div class="flex">
-                      <p class="memo">{{ $post->memo }}</p>
-                      <div>
-                        <form action="/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
-                          @csrf
-                          @method('DELETE')
-                          <button type="button" onclick="deletePost({{ $post->id }})" class="">delete</button> 
-                        </form>
+                  
+                  <div class="flex">
+                    <div class="bg-red-200 flex flex-col block w-80">
+                      <div class="flex">
+                        <p class="w-40">重量：{{ $post->weight }}kg</p>
+                        <p class="w-40">回数：{{ $post->reps }}回</p>
+                      </div>
+                      <div class="flex">
+                        <p class="w-40">時間：{{ $post->time }}</p>
+                        <p class="w-40">距離：{{ $post->distance }}</p>
+                      </div>
+                      <div class="flex">
+                        <p class="">メモ：{{ $post->memo }}</p>
                       </div>
                     </div>
+                    <div class="bg-green-200">
+                      <form action="/posts/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="deletePost({{ $post->id }})" class="">x</button> 
+                      </form>
+                    </div>
                   </div>
-                </div>
+                </div>   
+                @endforeach
+                  
                 
-              </div> 
-              
-            @endforeach
             </div>
             
             
