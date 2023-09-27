@@ -12,6 +12,13 @@ class Part extends Model
 {
     use HasFactory;
     
+    public function getLists()
+    {
+        $parts = Part::pluck('part_name', 'id');
+        
+        return $parts;
+    }
+    
     public function posts()
     {
         return $this->hasMany(Post::class);

@@ -13,9 +13,6 @@
         
   </head>
   <x-app-layout>
-      <x-slot name="header">
-        筋トレ管理
-      </x-slot>
       <body class="antialiased">
         <div class="header flex justify-center">
           <h1>筋トレ管理アプリ</h1>
@@ -24,121 +21,163 @@
           
           <a href="/">戻る</a>
 
- <!--入力フォーム-->          
-          <div class="btn" id="addButton">追加</div>
-        <form action="/posts/create" method="POST">
-          @csrf
-          <div class="content flex justify-center">
-            <div class="">
-              <input type="text" name="post[menu_name][0]" class="menu_name block" id="menu_name"/>
-              <input type="number" name="post[weight][0]"/>
-              <input type="number" name="post[reps][0]"/>
-              <input type="time" name="post[time][0]"/>
-              <input type="number" name="post[distance][0]"/>
-              <input type="text" name="post[memo][0]"/>
+ <!--入力フォーム--> 
+      <div class="flex justify-center">
+        <div class="">
+          
+          <form action="/posts/create" method="POST">
+            @csrf
+            <div class="flex">
+              <div>
+                <input type="submit" value="保存"/>
+              </div>
+              <div class="btn" id="addButton">追加</div>
+            </div>
+            <div class="flex">
+              <div>
+                <p>メニューを選択</p>
+                <input type="text" name="post[menu_name][0]" class="menu_name block" id="menu_name" value=""/>
+              </div>
+              <div class="content">
+                <div class="flex">
+                  <div>
+                    <p>重さ</p>
+                    <input type="number" name="post[weight][0]"/>
+                  </div>
+                  <div>
+                    <p>回数</p>
+                    <input type="number" name="post[reps][0]"/>
+                  </div>
+                  <div>
+                    <p>時間</p>
+                    <input type="time" name="post[time][0]" value="00:00"/>
+                  </div>
+                  <div>
+                    <p>距離</p>
+                    <input type="number" name="post[distance][0]"/>
+                  </div>
+                  <div>
+                    <p>メモ</p>
+                    <input type="text" name="post[memo][0]"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+      <!--メニュー一覧-->
+          <div class="flex justify-between">
+            <div class="w-1/6 bg-green-200">
+              <input type="button" value="胸" onclick="clickChest()">
+                <div id="chest_menus">
+                @foreach($chests as $chest)
+                  <div class="flex">
+                    <input type="button" value="{{ $chest->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $chest->id }}" id="form_{{ $chest->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $chest->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
+            </div>        
+            <div class="w-1/6 bg-red-200">
+              <input type="button" value="背中" onclick="clickBack()">
+                <div id="back_menus">
+                @foreach($backs as $back)
+                  <div class="flex">
+                    <input type="button" value="{{ $back->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $back->id }}" id="form_{{ $back->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $back->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
+            </div>
+            <div class="w-1/6 bg-green-200">
+              <input type="button" value="足" onclick="clickLeg()">
+                <div id="leg_menus">
+                @foreach($legs as $leg)
+                  <div class="flex">
+                    <input type="button" value="{{ $leg->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $leg->id }}" id="form_{{ $leg->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $leg->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
+            </div>
+            <div  class="w-1/6 bg-red-200">
+              <input type="button" value="腕" onclick="clickArm()">
+                <div id="arm_menus">
+                @foreach($arms as $arm)
+                  <div class="flex">
+                    <input type="button" value="{{ $arm->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $arm->id }}" id="form_{{ $arm->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $arm->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
+            </div>
+            <div  class="w-1/6 bg-green-200">
+              <input type="button" value="肩" onclick="clickShoulder()">
+                <div id="shoulder_menus">
+                @foreach($shoulders as $shoulder)
+                  <div class="flex">
+                    <input type="button" value="{{ $shoulder->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $shoulder->id }}" id="form_{{ $shoulder->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $shoulder->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
+            </div>
+            <div  class="w-1/6 bg-red-200">
+              <input type="button" value="その他" onclick="clickOther()">
+                <div id="other_menus">
+                @foreach($others as $other)
+                  <div class="flex">
+                    <input type="button" value="{{ $other->menu_name }}" onclick="clickMenu(event)">
+                    <form action="/posts/{{ $other->id }}" id="form_{{ $other->id }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" onclick="deleteMenu({{ $other->id }})">x</button> 
+                    </form>
+                  </div>
+                @endforeach
+                </div>
             </div>
           </div>
-          <input type="submit" value="保存"/>
-        </form>
-    <!--メニュー一覧-->
-        <div class="w-3/5 flex justify-between ">
-          <div class="flex">
-            <input type="button" value="胸" onclick="clickChest()">
-              <div id="chest_menus">
-              @foreach($chests as $chest)
-                <input type="button" value="{{ $chest->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $chest->id }}" id="form_{{ $chest->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $chest->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>        
-          <div>
-            <input type="button" value="背中" onclick="clickBack()">
-              <div id="back_menus">
-              @foreach($backs as $back)
-                <input type="button" value="{{ $back->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $back->id }}" id="form_{{ $back->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $back->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>
-          <div>
-            <input type="button" value="足" onclick="clickLeg()">
-              <div id="leg_menus">
-              @foreach($legs as $leg)
-                <input type="button" value="{{ $leg->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $leg->id }}" id="form_{{ $leg->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $leg->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>
-          <div>
-            <input type="button" value="腕" onclick="clickArm()">
-              <div id="arm_menus">
-              @foreach($arms as $arm)
-                <input type="button" value="{{ $arm->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $arm->id }}" id="form_{{ $arm->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $arm->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>
-          <div>
-            <input type="button" value="肩" onclick="clickShoulder()">
-              <div id="shoulder_menus">
-              @foreach($shoulders as $shoulder)
-                <input type="button" value="{{ $shoulder->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $shoulder->id }}" id="form_{{ $shoulder->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $shoulder->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>
-          <div>
-            <input type="button" value="その他" onclick="clickOther()">
-              <div id="other_menus">
-              @foreach($others as $other)
-                <input type="button" value="{{ $other->menu_name }}" onclick="clickMenu(event)">
-                <form action="/posts/{{ $other->id }}" id="form_{{ $other->id }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" onclick="deleteMenu({{ $other->id }})">delete</button> 
-                </form>
-              @endforeach
-              </div>
-          </div>
+            <div>
+              <input type="button" value="メニューを追加する" onclick="addMenu()">
+              <form action="/posts/create/menu" method="POST">
+                @csrf
+                <div id="add_menu">
+                  <select name="menu[part_id]">
+                    <option value="1">胸</option>
+                    <option value="2">背中</option>
+                    <option value="3">足</option>
+                    <option value="4">腕</option>
+                    <option value="5">肩</option>
+                    <option value="6">その他</option>
+                  </select>
+                  <input type="text" name="menu[menu_name]"/> 
+                  <input type="submit" value="メニュー追加">
+                </div>
+              </form>
+            </div>
         </div>
-          <div>
-            <input type="button" value="メニューを追加する" onclick="addMenu()">
-            <form action="/posts/create/menu" method="POST">
-              @csrf
-              <div id="add_menu">
-                <select name="menu[part_id]">
-                  <option value="1">胸</option>
-                  <option value="2">背中</option>
-                  <option value="3">足</option>
-                  <option value="4">腕</option>
-                  <option value="5">肩</option>
-                  <option value="6">その他</option>
-                </select>
-                <input type="text" name="menu[menu_name]"/> 
-                <input type="submit" value="メニュー追加">
-              </div>
-            </form>
-          </div>
+      </div>
+        
         
         
         
@@ -182,6 +221,7 @@
           
           const timeInput = document.createElement('input');
           timeInput.type = 'time';
+          timeInput.value = "00:00";
           timeInput.name = `post[time][${newIndex}]`;
           newDiv.appendChild(timeInput);
           
@@ -197,6 +237,7 @@
           
           // content 要素に div 要素を追加
           document.querySelector('.content').appendChild(newDiv);
+          
         }else{
           alert('メニューを選択してください');
         }

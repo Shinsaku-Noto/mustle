@@ -13,12 +13,79 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+      if(isset($requst)){
+        $today = $request->query('date');
+      }else{
         $today = now();
-        $posts = Post::whereDate('created_at', $today)->get();
+      }
+      
+      $user = Auth::id();
+      $posts = Post::whereDate('created_at', $today)
+                            ->where('user_id', $user)
+                            ->get();
         
         return view('posts.index')->with(['posts' => $posts]);
+    }
+    
+    public function users(Request $request)
+    {
+      $posts = Post::orderBy("created_at", "DESC")->get();
+      
+      $part = new Part;
+      $parts = $part->getLists();
+      $searchWord = $request->input('searchWord');
+      $partId = $request->input('partId');
+      
+      return view('posts.users')->with([
+                          'posts' => $posts,
+                          'parts' => $parts,
+                          'searchWord' => $searchWord,
+                          'partId' => $partId,
+                          ]);
+    }
+    
+    public function searchmenu(Request $request)
+    {
+      $searchWord = $request->input('searchWord');
+      $partId = $request->input('partId');
+      
+      if(isset($request)){
+        $post = new Post;
+        
+        $query = $post;
+      }else{
+        $query = Post::query();
+      
+        if (isset($searchWord)) {
+          
+          $query->whereHas('menu', function($q) use ($searchWord){
+            $q->where('menu_name', 'like', '%' . self::escapeLike($searchWord) . '%');
+          });
+        }
+        
+        if(isset($partId)) {
+          $query->where('part_id', $partId);
+        }
+      }
+      
+      $posts = $query->orderBy('created_at', 'desc')->paginate(15);
+      
+      $part = new Part;
+      $parts = $part->getLists();
+      
+      return view('posts.users', [
+          'posts' => $posts,
+          'parts' => $parts,
+          'searchWord' => $searchWord,
+          'partId' => $partId
+        ]);
+    }
+    
+    public static function escapeLike($str)
+    {
+        return str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $str);
     }
     
     public function create()

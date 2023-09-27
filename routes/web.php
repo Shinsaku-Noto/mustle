@@ -33,10 +33,13 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
     Route::get('/', 'index')->name('index');
+    Route::get('/posts/users', 'users')->name('users');
     Route::get('/posts/create', 'create')->name('create');
+    Route::get('/search/menu', 'searchmenu')->name('searchmenu');
+    // Route::get('/schedule/get', 'schedule_get')->name('index');
     Route::post('/posts/create', 'store')->name('store');
     Route::post('/posts/create/menu', 'store_menu')->name('store_menu');
-    Route::delete('/{post}', 'delete')->name('delete');
+    Route::delete('/posts/{post}', 'delete')->name('delete');
     Route::delete('/posts/{menu}', 'menu_delete')->name('menu_delete');
 });
 
