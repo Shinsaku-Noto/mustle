@@ -39,7 +39,7 @@ class PostController extends Controller
       $partId = $request->input('partId');
       
       return view('posts.users')->with([
-                          'posts' => $posts,
+                          'posts' => $posts->getPaginateByLimit(),
                           'parts' => $parts,
                           'searchWord' => $searchWord,
                           'partId' => $partId,
@@ -52,10 +52,6 @@ class PostController extends Controller
       $partId = $request->input('partId');
       
       if(isset($request)){
-        $post = new Post;
-        
-        $query = $post;
-      }else{
         $query = Post::query();
       
         if (isset($searchWord)) {
@@ -68,6 +64,10 @@ class PostController extends Controller
         if(isset($partId)) {
           $query->where('part_id', $partId);
         }
+      }else{
+        $post = new Post;
+        
+        $query = $post;
       }
       
       $posts = $query->orderBy('created_at', 'desc')->paginate(15);

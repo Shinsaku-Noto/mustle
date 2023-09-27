@@ -29,11 +29,11 @@
             @csrf
             <div class="flex">
               <div>
-                <input type="submit" value="保存"/>
+                <input type="submit" value="保存" class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"/>
               </div>
-              <div class="btn" id="addButton">追加</div>
+              <div class="btn text-white py-2 px-4 uppercase rounded bg-green-400 hover:bg-green-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5" id="addButton">セット数追加</div>
             </div>
-            <div class="flex">
+            <div class="flex mt-5">
               <div>
                 <p>メニューを選択</p>
                 <input type="text" name="post[menu_name][0]" class="menu_name block" id="menu_name" value=""/>
@@ -41,7 +41,7 @@
               <div class="content">
                 <div class="flex">
                   <div>
-                    <p>重さ</p>
+                    <p>重さ(kg)</p>
                     <input type="number" name="post[weight][0]"/>
                   </div>
                   <div>
@@ -53,7 +53,7 @@
                     <input type="time" name="post[time][0]" value="00:00"/>
                   </div>
                   <div>
-                    <p>距離</p>
+                    <p>距離(km)</p>
                     <input type="number" name="post[distance][0]"/>
                   </div>
                   <div>
@@ -65,92 +65,104 @@
             </div>
           </form>
       <!--メニュー一覧-->
-          <div class="flex justify-between">
+          <div class="flex justify-between mt-5">
             <div class="w-1/6 bg-green-200">
-              <input type="button" value="胸" onclick="clickChest()">
+              <div class="flex justify-center">
+                <input type="button" value="胸" onclick="clickChest()">
+              </div>
                 <div id="chest_menus">
                 @foreach($chests as $chest)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $chest->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $chest->id }}" id="form_{{ $chest->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $chest->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $chest->id }})">×️</button> 
                     </form>
                   </div>
                 @endforeach
                 </div>
             </div>        
             <div class="w-1/6 bg-red-200">
-              <input type="button" value="背中" onclick="clickBack()">
+              <div class="flex justify-center">
+                <input type="button" value="背中" onclick="clickBack()">
+              </div>
                 <div id="back_menus">
                 @foreach($backs as $back)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $back->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $back->id }}" id="form_{{ $back->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $back->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $back->id }})">×</button> 
                     </form>
                   </div>
                 @endforeach
                 </div>
             </div>
             <div class="w-1/6 bg-green-200">
-              <input type="button" value="足" onclick="clickLeg()">
+              <div class="flex justify-center">
+                <input type="button" value="足" onclick="clickLeg()">
+              </div>
                 <div id="leg_menus">
                 @foreach($legs as $leg)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $leg->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $leg->id }}" id="form_{{ $leg->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $leg->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $leg->id }})">×</button> 
                     </form>
                   </div>
                 @endforeach
                 </div>
             </div>
             <div  class="w-1/6 bg-red-200">
-              <input type="button" value="腕" onclick="clickArm()">
+              <div class="flex justify-center">
+                <input type="button" value="腕" onclick="clickArm()">
+              </div>
                 <div id="arm_menus">
                 @foreach($arms as $arm)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $arm->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $arm->id }}" id="form_{{ $arm->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $arm->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $arm->id }})">×</button> 
                     </form>
                   </div>
                 @endforeach
                 </div>
             </div>
             <div  class="w-1/6 bg-green-200">
-              <input type="button" value="肩" onclick="clickShoulder()">
+              <div class="flex justify-center">
+                <input type="button" value="肩" onclick="clickShoulder()">
+              </div>
                 <div id="shoulder_menus">
                 @foreach($shoulders as $shoulder)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $shoulder->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $shoulder->id }}" id="form_{{ $shoulder->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $shoulder->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $shoulder->id }})">×</button> 
                     </form>
                   </div>
                 @endforeach
                 </div>
             </div>
             <div  class="w-1/6 bg-red-200">
-              <input type="button" value="その他" onclick="clickOther()">
+              <div class="flex justify-center">
+                <input type="button" value="その他" onclick="clickOther()">
+              </div>
                 <div id="other_menus">
                 @foreach($others as $other)
-                  <div class="flex">
+                  <div class="flex justify-between">
                     <input type="button" value="{{ $other->menu_name }}" onclick="clickMenu(event)">
                     <form action="/posts/{{ $other->id }}" id="form_{{ $other->id }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button type="button" onclick="deleteMenu({{ $other->id }})">x</button> 
+                      <button type="button" onclick="deleteMenu({{ $other->id }})">×</button> 
                     </form>
                   </div>
                 @endforeach
@@ -158,7 +170,7 @@
             </div>
           </div>
             <div>
-              <input type="button" value="メニューを追加する" onclick="addMenu()">
+              <input type="button" value="メニューを追加する" onclick="addMenu()" class="mt-5 text-yellow-500 hover:text-white py-2 px-4 uppercase rounded bg-white border border-yellow-500 hover:bg-yellow-600 shadow-none hover:shadow-lg font-medium transition duration-200">
               <form action="/posts/create/menu" method="POST">
                 @csrf
                 <div id="add_menu">
@@ -171,7 +183,7 @@
                     <option value="6">その他</option>
                   </select>
                   <input type="text" name="menu[menu_name]"/> 
-                  <input type="submit" value="メニュー追加">
+                  <input type="submit" value="メニュー追加" class="py-1.5 px-4 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 first:rounded-l-lg last:rounded-r-lg">
                 </div>
               </form>
             </div>
