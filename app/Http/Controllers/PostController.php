@@ -15,7 +15,7 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-      if(isset($requst)){
+      if(isset($request)){
         $today = $request->query('date');
       }else{
         $today = now();
@@ -23,27 +23,25 @@ class PostController extends Controller
       
       $user = Auth::id();
       $posts = Post::whereDate('created_at', $today)
-                            ->where('user_id', $user)
-                            ->get();
+        ->where('user_id', $user)
+        ->get();
         
         return view('posts.index')->with(['posts' => $posts]);
     }
     
-    public function users(Request $request)
+    public function users(Request $request, Post $post)
     {
-      $posts = Post::orderBy("created_at", "DESC")->get();
-      
       $part = new Part;
       $parts = $part->getLists();
       $searchWord = $request->input('searchWord');
       $partId = $request->input('partId');
       
       return view('posts.users')->with([
-                          'posts' => $posts,
-                          'parts' => $parts,
-                          'searchWord' => $searchWord,
-                          'partId' => $partId,
-                          ]);
+        'posts' => $post->getPaginate(),
+        'parts' => $parts,
+        'searchWord' => $searchWord,
+        'partId' => $partId,
+        ]);
     }
     
     public function searchmenu(Request $request)
@@ -52,10 +50,6 @@ class PostController extends Controller
       $partId = $request->input('partId');
       
       if(isset($request)){
-        $post = new Post;
-        
-        $query = $post;
-      }else{
         $query = Post::query();
       
         if (isset($searchWord)) {
@@ -68,6 +62,10 @@ class PostController extends Controller
         if(isset($partId)) {
           $query->where('part_id', $partId);
         }
+      }else{
+        $post = new Post;
+        
+        $query = $post;
       }
       
       $posts = $query->orderBy('created_at', 'desc')->paginate(15);

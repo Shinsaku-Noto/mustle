@@ -21,164 +21,114 @@
             
 
             <div>
-              <div class="flex flex-col block justify-center">
+              <div class="flex justify-center">
                 @php
                   $part_value = "part_name";
                   $menu_value = "menu_name";
                   $user_value = "user_name";
                 @endphp
-                
-                {{--@foreach ($posts as $post)
-                <div class="flex justify-center">
-                  <div class="h-10 inline">
-                    @if($post->user_id != $user_value)
-                      @php
-                        $user_value = $post->user_id;
-                      @endphp
-                      <h2 class="text-3xl w-24">{{ $post->user->name }}</h2>
-                    @else
-                      <h2 class="text-3xl w-24 opacity-0">{{ $post->user->name }}</h2>
-                    @endif
-                  </div>
-                  <div class="bg-gray-200 flex justify-center border-4">
-                    @if($post->part->part_name != $part_value)
-                      @php
-                        $part_value = $post->part->part_name;
-                      @endphp
-                      <h2 class="text-xl w-24 items-center">{{ $post->part->part_name }}</h2>
-                    @else
-                      <h2 class="text-xl w-24 items-center  opacity-0">{{ $post->part->part_name }}</h2>
-                    @endif
-                  </div>
-                    
-                  <div class="bg-blue-200">
-                    @if($post->menu->menu_name != $menu_value)
-                      @php
-                        $menu_value = $post->menu->menu_name;
-                      @endphp
-                      <h3 class="text-lg w-48">{{ $post->menu->menu_name }}</h3>
-                    @else
-                      <h3 class="text-lg w-48  opacity-0">{{ $post->menu->menu_name }}</h3>
-                    @endif
-                  </div>
-                    
-                  <div class="flex">
-                    <div class="bg-red-200 flex flex-col block w-80">
-                      <div class="flex">
-                        <p class="w-40">重量：{{ $post->weight }}kg</p>
-                        <p class="w-40">回数：{{ $post->reps }}回</p>
-                      </div>
-                      <div class="flex">
-                        <p class="w-40">時間：{{ $post->time }}</p>
-                        <p class="w-40">距離：{{ $post->distance }}</p>
-                      </div>
-                      <div class="flex">
-                        <p class="">メモ：{{ $post->memo }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>   
-                @endforeach--}}
-              </div>
-              
+            
               <!--検索フォーム-->
-              <div class="flex">
-                <div>
-                  <br>
-                  <h2>メニュー検索画面</h2>
-                  <br>
-                  <!--メニュー検索フォーム-->
-                  <div>
+                <div class="flex">
+                  <div  class="bg-orange-300 w-72 h-96 mx-5 px-5">
+                    <br>
+                    <h2 class="flex justify-center font-bold">メニュー検索画面</h2>
+                    <br>
+                    <!--メニュー検索フォーム-->
                     <div>
-                      <form method="GET" action="{{ route('searchmenu') }}">
-                        <div>
-                          <label>メニュー名</label>
-                          <!--入力-->
-                          <div>
-                            <input type="text" name="searchWord" value="{{ $searchWord }}">
+                      <div>
+                        <form method="GET" action="{{ route('searchmenu') }}">
+                          <div class="mt-5">
+                            <label>メニュー名:</label>
+                            <!--入力-->
+                            <div>
+                              <input type="text" name="searchWord" value="{{ $searchWord }}" class="appearance-none border border-gray-100 bg-white shadow-sm transition focus:shadow-md rounded-md w-full p-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline">
+                            </div>
                           </div>
-                          <div>
-                            <button type="submit">検索</button>
+                          <!--プルダウンParts選択-->
+                          <div class="mt-5">
+                            <label>メニュー部位:</label>
+                            <div>
+                              <select name="partId" value="{{ $partId }}">
+                                <option value="">未選択</option>
+                                
+                                @foreach($parts as $id => $part_name)
+                                <option value="{{ $id }}">
+                                  {{ $part_name }}
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
                           </div>
-                        </div>
-                        <!--プルダウンParts選択-->
-                        <div>
-                          <label>メニュー部位</label>
-                          <div>
-                            <select name="partId" value="{{ $partId }}">
-                              <option value="">未選択</option>
-                              
-                              @foreach($parts as $id => $part_name)
-                              <option value="{{ $id }}">
-                                {{ $part_name }}
-                              </option>
-                              @endforeach
-                            </select>
+                          <div class="mt-5 flex justify-center">
+                            <button type="submit" class="text-blue-500 hover:text-white py-2 px-4 uppercase rounded bg-white border border-blue-500 hover:bg-blue-600 shadow-none hover:shadow-lg font-medium transition duration-200">検索</button>
                           </div>
-                        </div>
-                      </form>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div>
-                  @if (!empty($posts))
+                  
                   <div>
-                    <table>
-                      <thead>
+                    @if (!empty($posts))
+                    <div>
+                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <td class="font-extrabold px-6 py-3">ユーザー名</td>
+                            <td class="font-bold px-6 py-3">部位</td>
+                            <td class="font-semibold px-6 py-3">メニュー名</td>
+                            <td class="px-6 py-3">重量・時間</td>
+                            <td class="px-6 py-3">回数・距離</td>
+                          </tr>
+                        </thead>
+                        @foreach($posts as $post)
                         <tr>
-                          <td>ユーザー名</td>
-                          <td>部位</td>
-                          <td>メニュー名</td>
-                          <td>重量・時間</td>
-                          <td>回数・距離</td>
+                          <!--ユーザー名-->
+                          @if($post->user_id != $user_value)
+                            @php
+                              $user_value = $post->user_id;
+                            @endphp
+                            <td class="font-extrabold px-6 py-4">{{ $post->user->name }}</td>
+                          @else
+                            <td class="font-extrabold px-6 py-4 opacity-0">{{ $post->user->name }}</td>
+                          @endif
+                          <!--部位-->
+                          @if($post->part->part_name != $part_value)
+                            @php
+                              $part_value = $post->part->part_name;
+                            @endphp
+                            <td class="font-bold px-6 py-4">{{ $post->part->part_name }}</td>
+                          @else
+                            <td class="font-bold px-6 py-4 opacity-0">{{ $post->part->part_name }}</td>
+                          @endif
+                          <!--メニュー名-->
+                          @if($post->menu->menu_name != $menu_value)
+                            @php
+                              $menu_value = $post->menu->menu_name;
+                            @endphp
+                            <td class="font-semibold px-6 py-4">{{ $post->menu->menu_name }}</td>
+                          @else
+                            <td class="font-semibold px-6 py-4 opacity-0">{{ $post->menu->menu_name }}</td>
+                          @endif
+                          <!--重量・回数・時間・距離-->
+                          <td class="px-6 py-4">
+                            {{ $post->weight }}kg<br>
+                            {{ $post->time }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ $post->reps }}回<br>
+                            {{ $post->distance }}
+                          </td>
                         </tr>
-                      </thead>
-                      @foreach($posts as $post)
-                      <tr>
-                        <!--ユーザー名-->
-                        @if($post->user_id != $user_value)
-                          @php
-                            $user_value = $post->user_id;
-                          @endphp
-                          <td>{{ $post->user->name }}</td>
-                        @else
-                          <td class="opacity-0">{{ $post->user->name }}</td>
-                        @endif
-                        <!--部位-->
-                        @if($post->part->part_name != $part_value)
-                          @php
-                            $part_value = $post->part->part_name;
-                          @endphp
-                          <td>{{ $post->part->part_name }}</td>
-                        @else
-                          <td class="opacity-0">{{ $post->part->part_name }}</td>
-                        @endif
-                        <!--メニュー名-->
-                        @if($post->menu->menu_name != $menu_value)
-                          @php
-                            $menu_value = $post->menu->menu_name;
-                          @endphp
-                          <td>{{ $post->menu->menu_name }}</td>
-                        @else
-                          <td class="opacity-0">{{ $post->menu->menu_name }}</td>
-                        @endif
-                        <!--重量・回数・時間・距離-->
-                        <td>
-                          {{ $post->weight }}kg<br>
-                          {{ $post->time }}
-                        </td>
-                        <td>
-                          {{ $post->reps }}回<br>
-                          {{ $post->distance }}
-                        </td>
-                      </tr>
-                      @endforeach
-                    </table>
+                        @endforeach
+                      </table>
+                      <div class='paginate'>
+                          {{ $posts->links() }}
+                      </div>
+                    </div>
+                    @endif
                   </div>
-                  @endif
                 </div>
-                
               </div>
             </div>
             

@@ -24,7 +24,11 @@ class Post extends Model
         'distance',
         'memo',
     ];
-
+    
+    public function getPaginate(int $limit_count = 15)
+    {
+        return $this::with('user')->orderBy('created_at', 'desc')->paginate($limit_count);
+    }
     
     public function user()
     {
@@ -40,8 +44,4 @@ class Post extends Model
     {
         return $this->belongsTo(Menu::class);
     }
-    
-    // public function getBy(){
-    //     return $this::with('part')->get();
-    // }
 }
