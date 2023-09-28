@@ -25,9 +25,9 @@ class Post extends Model
         'memo',
     ];
     
-    public function getPaginateByLimit(int $limit_count = 15)
+    public function getPaginate(int $limit_count = 15)
     {
-        return $this->paginate($limit_count);
+        return $this::with('user')->orderBy('created_at', 'desc')->paginate($limit_count);
     }
     
     public function user()
