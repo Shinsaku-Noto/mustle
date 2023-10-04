@@ -11,32 +11,24 @@ let calendar = new Calendar(calendarEl, {
     plugins: [interactionPlugin, dayGridPlugin,],
     initialView: "dayGridMonth",
     headerToolbar: {
-        left: "prev,next today",
+        left: "prev,next",
         center: "title",
         right: "",
         end: "dayGridMonth,timeGridWeek",
     },
     locale: "ja",
 
-    // // 日付クリックイベント
-    
-    // dayClick: function(date) {
-    //       console.log(date);
-    // }
+    // 日付クリックイベント
     events: initialEvents,
     
     dateClick: function (info) {
-            window.location.href = "/?date=" + info.dateStr;
+            window.location.href ="/?date=" + info.dateStr;
         },
-    
-    // selectable: true,
-    // select: function (info) {
-    //     // alert("selected " + info.startStr + " to " + info.endStr);
         
-    //     axios.post("/", {
-    //         select_date: info.start.valueOf(),
-    //     });
-        
-    // },
+    eventSources: [ // ←★追記
+        {
+            url: '/get_events',
+        },
+    ],
 });
 calendar.render();

@@ -19,7 +19,7 @@
         </div>
         
           
-          <a href="/">戻る</a>
+          <a href="/posts">戻る</a>
 
  <!--入力フォーム--> 
       <div class="flex justify-center">

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Part;
 use App\Models\Menu;
+use App\Models\User;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -13,22 +15,76 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index(Request $request)
+  //index.blade.php
+    public function main_index(Post $post)
     {
-      if(isset($request)){
-        $today = $request->query('date');
-      }else{
-        $today = now();
-      }
+      $today = now()->format('y-m-d');
+      $user = Auth::id();
+      $menuday = now();
+      $posts = Post::whereDate('created_at', $today)
+        ->where('user_id', $user)
+        ->get();
       
+        return view('posts.index')->with([
+          'posts' => $posts,
+          'today' => $today,
+        ]);
+    }
+  
+    public function index(Post $post,Request $request)
+    {
+      $today = $request->query('date');
       $user = Auth::id();
       $posts = Post::whereDate('created_at', $today)
         ->where('user_id', $user)
         ->get();
         
-        return view('posts.index')->with(['posts' => $posts]);
+        return view('posts.index')->with([
+          'posts' => $posts,
+          'today' => $today,
+        ]);
     }
     
+    public function getEvents(Post $post, Request $request)
+    {
+      $date = $post->getDate();
+      
+      return [
+            [
+                'start' => $date,
+            ],
+            [
+                'start' => '2023-09-20',
+            ],
+            [
+                'start' => '2023-09-30',
+                'color' => '#ff44cc',
+            ],
+          ];
+      
+      // $start_date = $post->created_at;
+      // $end_date = $post->created_at;
+      
+      // dd($start_date);
+      
+      // return Post::query()
+      //   ->select(
+      //     'start_date as start',
+      //   )
+      //   ->where('end_date', '>', $start_date)
+      //   ->where('start_date', '<', $end_date)
+      //   ->get();
+    }
+    
+    
+    public function delete(Post $post)
+    {
+        $post->delete();
+        return redirect('/');
+    }
+    
+    
+  //user.blade.php
     public function users(Request $request, Post $post)
     {
       $part = new Part;
@@ -41,6 +97,7 @@ class PostController extends Controller
         'parts' => $parts,
         'searchWord' => $searchWord,
         'partId' => $partId,
+        'showModal' => false,
         ]);
     }
     
@@ -49,20 +106,20 @@ class PostController extends Controller
       $searchWord = $request->input('searchWord');
       $partId = $request->input('partId');
       
-      if(isset($request)){
+      if(isset($request)){//requestが来たとき
         $query = Post::query();
       
-        if (isset($searchWord)) {
+        if(isset($searchWord)) {//メニュー検索されたとき
           
           $query->whereHas('menu', function($q) use ($searchWord){
             $q->where('menu_name', 'like', '%' . self::escapeLike($searchWord) . '%');
           });
         }
         
-        if(isset($partId)) {
+        if(isset($partId)) {//部位検索されたとき
           $query->where('part_id', $partId);
         }
-      }else{
+      }else{//requestがないとき
         $post = new Post;
         
         $query = $post;
@@ -86,6 +143,13 @@ class PostController extends Controller
         return str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $str);
     }
     
+    public function modal()
+    {
+      return view('modal');
+    }
+    
+    
+  //create.blade.php
     public function create()
     {
         $chests = Menu::where("part_id", "1")->get();
@@ -135,12 +199,6 @@ class PostController extends Controller
       $menu->save();
       
       return redirect('/posts/create');
-    }
-    
-    public function delete(Post $post)
-    {
-        $post->delete();
-        return redirect('/');
     }
     
      public function menu_delete(Menu $menu)

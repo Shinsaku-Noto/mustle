@@ -20,14 +20,10 @@
             </div>
             
 
+            
+
             <div>
               <div class="flex justify-center">
-                @php
-                  $part_value = "part_name";
-                  $menu_value = "menu_name";
-                  $user_value = "user_name";
-                @endphp
-            
               <!--検索フォーム-->
                 <div class="flex">
                   <div  class="bg-orange-300 w-72 h-96 mx-5 px-5">
@@ -71,24 +67,42 @@
                   <div>
                     @if (!empty($posts))
                     <div>
-                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse border border-green-800">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                           <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <td class="font-extrabold px-6 py-3">ユーザー名</td>
-                            <td class="font-bold px-6 py-3">部位</td>
-                            <td class="font-semibold px-6 py-3">メニュー名</td>
-                            <td class="px-6 py-3">重量・時間</td>
-                            <td class="px-6 py-3">回数・距離</td>
+                            <td class="font-extrabold px-6 py-3 border border-green-600">ユーザー名</td>
+                            <td class="font-extrabold px-6 py-3 border border-green-600">日付</td>
+                            <td class="font-bold px-6 py-3 border border-green-600">部位</td>
+                            <td class="font-semibold px-6 py-3 border border-green-600">メニュー名</td>
+                            <td class="px-6 py-3 border border-green-600">重量・時間</td>
+                            <td class="px-6 py-3 border border-green-600">回数・距離</td>
                           </tr>
                         </thead>
+                        @php
+                          $part_value = "part_name";
+                          $menu_value = "menu_name";
+                          $user_value = "user_name";
+                          $date = "date";
+                        @endphp
                         @foreach($posts as $post)
                         <tr>
                           <!--ユーザー名-->
                           @if($post->user_id != $user_value)
                             @php
                               $user_value = $post->user_id;
+                              $part_value = "part_name";
+                              $menu_value = "menu_name";
                             @endphp
-                            <td class="font-extrabold px-6 py-4">{{ $post->user->name }}</td>
+                            <td class="font-extrabold px-6 py-4 border border-green-600">{{ $post->user->name }}</td>
+                          @else
+                            <td class="font-extrabold px-6 py-4 opacity-0">{{ $post->user->name }}</td>
+                          @endif
+                          <!--日付-->
+                          @if($post->created_at != $date)
+                            @php
+                              $date = $post->created_at;
+                            @endphp
+                            <td class="font-extrabold px-6 py-4 border border-green-600">{{ $post->created_at->format('m/d')}}</td>
                           @else
                             <td class="font-extrabold px-6 py-4 opacity-0">{{ $post->user->name }}</td>
                           @endif
@@ -97,7 +111,7 @@
                             @php
                               $part_value = $post->part->part_name;
                             @endphp
-                            <td class="font-bold px-6 py-4">{{ $post->part->part_name }}</td>
+                            <td class="font-bold px-6 py-4 border border-green-600">{{ $post->part->part_name }}</td>
                           @else
                             <td class="font-bold px-6 py-4 opacity-0">{{ $post->part->part_name }}</td>
                           @endif
@@ -106,18 +120,18 @@
                             @php
                               $menu_value = $post->menu->menu_name;
                             @endphp
-                            <td class="font-semibold px-6 py-4">{{ $post->menu->menu_name }}</td>
+                            <td class="font-semibold px-6 py-4 border border-green-600">@livewire('modal',['post' => $post])</td>
                           @else
                             <td class="font-semibold px-6 py-4 opacity-0">{{ $post->menu->menu_name }}</td>
                           @endif
                           <!--重量・回数・時間・距離-->
-                          <td class="px-6 py-4">
+                          <td class="px-6 py-4 border border-green-600">
                             {{ $post->weight }}kg<br>
                             {{ $post->time }}
                           </td>
-                          <td class="px-6 py-4">
+                          <td class="px-6 py-4 border border-green-600">
                             {{ $post->reps }}回<br>
-                            {{ $post->distance }}
+                            {{ $post->distance }}km
                           </td>
                         </tr>
                         @endforeach

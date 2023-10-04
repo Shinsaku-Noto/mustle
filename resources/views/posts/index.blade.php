@@ -27,68 +27,73 @@
             
         <!--今日のメニュー-->
             <div class="flex justify-center my-5">
-              <a  class="add" href="/posts/create">今日のメニュー</a>
+              <a  class="add" href="/posts/create">今日のメニューを追加</a>
             </div>
             
-            <div class="flex flex-col block justify-center">
+            <div class="flex justify-center">
+              <div class="">{{ $today }}のメニュー</div>
+            </div>
+            <div class="flex justify-center pb-10">
               @php
                 $part_value = "part_name";
                 $menu_value = "menu_name";
               @endphp
-              
-                @foreach ($posts as $post)
-                <div class="flex justify-center">
-                  <div class="bg-gray-200 flex justify-center border-4">
-                    @if($post->part->part_name != $part_value)
-                      @php
-                        $part_value = $post->part->part_name;
-                      @endphp
-                      <h2 class="text-xl w-24 items-center">{{ $post->part->part_name }}</h2>
-                    @else
-                      <h2 class="text-xl w-24 items-center  opacity-0">{{ $post->part->part_name }}</h2>
-                    @endif
-                  </div>
-                  
-                  <div class="bg-blue-200">
-                    @if($post->menu->menu_name != $menu_value)
-                      @php
-                        $menu_value = $post->menu->menu_name;
-                      @endphp
-                      <h3 class="text-lg w-48">{{ $post->menu->menu_name }}</h3>
-                    @else
-                      <h3 class="text-lg w-48  opacity-0">{{ $post->menu->menu_name }}</h3>
-                    @endif
-                  </div>
-                  
-                  <div class="flex">
-                    <div class="bg-red-200 flex flex-col block w-80">
-                      <div class="flex">
-                        <p class="w-40">重量：{{ $post->weight }}kg</p>
-                        <p class="w-40">回数：{{ $post->reps }}回</p>
-                      </div>
-                      <div class="flex">
-                        <p class="w-40">時間：{{ $post->time }}</p>
-                        <p class="w-40">距離：{{ $post->distance }}</p>
-                      </div>
-                      <div class="flex">
-                        <p class="">メモ：{{ $post->memo }}</p>
-                      </div>
-                    </div>
-                    <div class="bg-green-200">
-                      <form action="/posts/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="deletePost({{ $post->id }})" class="">x</button> 
+                <div class="w-3/5 flex justify-center">
+                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse border border-green-800">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                        <td class="font-bold px-6 py-3 border border-green-600">部位</td>
+                        <td class="font-semibold px-6 py-3 border border-green-600">メニュー名</td>
+                        <td class="px-6 py-3 border border-green-600">重量・時間</td>
+                        <td class="px-6 py-3 border border-green-600">回数・距離</td>
+                        <td class="px-6 py-3 border border-green-600">消去️</td>
+                      </tr>
+                    </thead>
+                    @php
+                      $part_value = "part_name";
+                      $menu_value = "menu_name";
+                    @endphp
+                    @foreach($posts as $post)
+                    <tr>
+                      <!--部位-->
+                      @if($post->part->part_name != $part_value)
+                        @php
+                          $part_value = $post->part->part_name;
+                        @endphp
+                        <td class="font-bold px-6 py-4 border border-green-600">{{ $post->part->part_name }}</td>
+                      @else
+                        <td class="font-bold px-6 py-4 opacity-0">{{ $post->part->part_name }}</td>
+                      @endif
+                      <!--メニュー名-->
+                      @if($post->menu->menu_name != $menu_value)
+                        @php
+                          $menu_value = $post->menu->menu_name;
+                        @endphp
+                        <td class="font-semibold px-6 py-4 border border-green-600">{{ $post->menu->menu_name }}</td>
+                      @else
+                        <td class="font-semibold px-6 py-4 opacity-0">{{ $post->menu->menu_name }}</td>
+                      @endif
+                      <!--重量・回数・時間・距離-->
+                      <td class="px-6 py-4 border border-green-600">
+                        {{ $post->weight }}kg<br>
+                        {{ $post->time }}
+                      </td>
+                      <td class="px-6 py-4 border border-green-600">
+                        {{ $post->reps }}回<br>
+                        {{ $post->distance }}km
+                      </td>
+                      <td class="px-6 py-4 border border-green-600">
+                        <form action="/posts/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
+                          @csrf
+                          @method('DELETE')
+                          <button type="button" onclick="deletePost({{ $post->id }})" class="">x</button> 
                       </form>
-                    </div>
-                  </div>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </table>
                 </div>   
-                @endforeach
-                  
-                
             </div>
-            
-            
           <script>
               function deletePost(id) {
                 'use strict'

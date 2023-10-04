@@ -30,6 +30,13 @@ class Post extends Model
         return $this::with('user')->orderBy('created_at', 'desc')->paginate($limit_count);
     }
     
+    public function getDate()
+    {
+        $date = Post::pluck('created_at');
+        
+        return $date;
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class);
