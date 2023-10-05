@@ -18,10 +18,10 @@ class PostController extends Controller
   //index.blade.php
     public function main_index(Post $post)
     {
-      $today = now()->format('y-m-d');
+      $today = now()->format('Y-m-d');
       $user = Auth::id();
       $menuday = now();
-      $posts = Post::whereDate('created_at', '23-10-5')
+      $posts = Post::whereDate('created_at', '2023-10-5')
         ->where('user_id', $user)
         ->get();
       
