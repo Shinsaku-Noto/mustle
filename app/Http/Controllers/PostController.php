@@ -21,7 +21,7 @@ class PostController extends Controller
       $today = now()->format('Y-m-d');
       $user = Auth::id();
       $menuday = now();
-      $posts = Post::whereDate('created_at', '2023-10-5')
+      $posts = Post::whereDate('created_at', $today)
         ->where('user_id', $user)
         ->get();
       
